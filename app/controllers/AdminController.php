@@ -25,15 +25,8 @@ class AdminController extends AppController
             return;
         }
 
-//        $model = new Main();
-//        $name = "Yura";
-//        $this->set(['name' => $name]);
-
     }
 
-    public function testAction()
-    {
-    }
 
     public function loginAction()
     {
