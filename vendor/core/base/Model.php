@@ -15,6 +15,7 @@ abstract class Model
     protected $pdo;
     protected $table;
     protected $pk = 'id';
+    protected $order = 'id';
 
     function __construct()
     {
@@ -26,9 +27,10 @@ abstract class Model
         return $this->pdo->execute($sql);
     }
 
-    public function findAll()
+    public function findAll($order = "")
     {
-        $sql = "SELECT * FROM {$this->table}";
+        $order= $order ?: $this->order;
+        $sql = "SELECT * FROM {$this->table} ORDER BY {$order}";
         return $this->pdo->query($sql);
     }
 

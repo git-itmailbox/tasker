@@ -1,8 +1,8 @@
 <?php
 namespace app\controllers;
 
-use \app\models\Main;
-use app\models\Tasks;
+use \app\models\Tasks;
+require_once LIBS . '/UploadImage.php';
 
 /**
  * Created by PhpStorm.
@@ -18,7 +18,6 @@ class MainController extends AppController
 
     public function indexAction()
     {
-        $model = new Main();
         $name = "Yura";
         $this->set(['name' => $name]);
 
@@ -32,7 +31,7 @@ class MainController extends AppController
             $model->description=$_POST['description'];
             $model->userName=$_POST['userName'];
             $model->email=$_POST['email'];
-            $model->image=$_POST['image'];
+            $model->image = UploadImage::upload( $_FILES['image'] );
 
             if($model->save())
                 header('Location: /');
@@ -44,7 +43,7 @@ class MainController extends AppController
 
     public function testAction()
     {
-//        echo "Main Controller test action";
+
     }
 
 }

@@ -28,7 +28,7 @@ class Tasks extends Model
         $this->userName     = (isset($attributes->userName))    ? $attributes->userName     : "";
         $this->email        = (isset($attributes->email))       ? $attributes->email        : "";
         $this->description  = (isset($attributes->description)) ? $attributes->description  : "";
-        $this->is_done      = (isset($attributes->is_done))     ? $attributes->is_done         : "";
+        $this->is_done      = (isset($attributes->is_done))     ? $attributes->is_done      : "";
         $this->image        = (isset($attributes->image))       ? $attributes->image        : "";
 
     }
@@ -36,14 +36,14 @@ class Tasks extends Model
 
     public function save()
     {
-        $sql = "INSERT INTO tasks(userName, email, description, image, is_done) VALUES (:username, :email, :description, :image, :is_done)";
+        $sql = "INSERT INTO tasks(userName, email, description, image) VALUES (:username, :email, :description, :image)";
 
         $bindParams = [
             ':username'     =>  $this->userName,
             ':email'        =>  $this->email,
             ':description'  =>  $this->description,
             ':image'        =>  $this->image,
-            ':is_done'      =>  $this->is_done,
+//            ':is_done'      =>  $this->is_done,
         ];
         $stmt = $this->pdo->queryBindParams($sql, $bindParams);
 

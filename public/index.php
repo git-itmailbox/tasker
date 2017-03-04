@@ -1,19 +1,17 @@
 <?php
-
 use vendor\core\Router;
-$query =trim($_SERVER['QUERY_STRING'], '/');
 
+$query =trim($_SERVER['QUERY_STRING'], '/');
 
 define('WWW', __DIR__);
 define('ROOT', dirname(__DIR__));
 define('CORE', dirname(__DIR__).'vendor/core');
 define('LIBS', dirname(__DIR__).'/vendor/libs');
 define('APP', dirname(__DIR__).'/app');
+define('IMG',  './img');
 define('LAYOUT', 'default');
 
-//require '../vendor/core/Router.php';
 require '../vendor/libs/functions.php';
-
 
 spl_autoload_register(function ($class){
     $file = ROOT . '/' . str_replace('\\','/',$class). '.php';
@@ -23,9 +21,10 @@ spl_autoload_register(function ($class){
 });
 
 //defaults routes
+Router::add('^admin/index/(?P<order>[a-z-]+)/?$', ['controller' => 'Admin', 'action' => 'index']);
+Router::add('^create/?$', ['controller' => 'Main', 'action' => 'create']);
 Router::add('^$', ['controller' => 'Main', 'action' => 'index']);
 Router::add('^(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$');
-//Router::add('^(?P<controller>[a-z-]+)/?$', ['action' => 'index']);
 
 Router::dispatch($query);
 

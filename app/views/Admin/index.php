@@ -2,11 +2,13 @@
 
     <h2>Admin panel</h2>
 
-    <div class="row">
-        <div class="col-md-2 col-sm-2">user name</div>
-        <div class="col-md-2 col-sm-2">email</div>
-        <div class="col-md-3 col-sm-3">description</div>
-        <div class="col-md-2 col-sm-2">image</div>
+
+    <div class="row panel panel-default">
+        <div class="col-md-2 col-sm-2 panel-heading">user name</div>
+        <div class="col-md-2 col-sm-2 panel-heading">email</div>
+        <div class="col-md-3 col-sm-3 panel-heading">description</div>
+        <div class="col-md-3 col-sm-3 panel-heading">image</div>
+        <div class="col-md-2 col-sm-2 panel-heading">is done</div>
     </div>
     <?php if ($tasks): ?>
         <?php foreach ($tasks as $task): ?>
@@ -25,16 +27,23 @@
                     <a href="#myModal" data-toggle="modal" data-target="#myModal" class="editTask"
                        data-id="<?= $task->id ?>">Edit</a>
                 </div>
-                <div class="col-md-2 col-sm-2">
-                    <?= $task->image ?>
+                <div class="col-md-3 col-sm-3">
+                    <?php if (!$task->image): ?>
+                        <img src="../img/noimage.jpeg" class="img-responsive" alt="task image"  width="100" height="100">
+                    <?php endif; ?>
+                    <?php if ($task->image): ?>
+                        <img src=".<?= $task->image ?>" class="img-responsive" alt="task image" >
+                    <?php endif; ?>
+
                 </div>
                 <div class="col-md-2 col-sm-2">
                     <input
                             type="checkbox"
-                            id="cbox<?= $task->id ?>"
+                            class="done-trigger"
+                            id="cbox_<?= $task->id ?>"
                         <?= ($task->is_done > 0) ? "checked" : ""; ?>
                     >
-                    <label for="cbox<?= $task->id ?>">Check if Done</label>
+                    <label for="cbox_<?= $task->id ?>">Check if Done</label>
                 </div>
 
             </div>
@@ -70,31 +79,9 @@
 
 <script>
     $(document).ready(function () {
-        $("#submitTaskEdit").on("click", function () {
-            console.log(this);
-            var id = $("#taskId").val();
-            var descr = $("#mdl_description").val();
-
-            $.post(
-                "/admin/update",
-                {//send form
-                    id: id,
-                    description: descr,
-                },
-                function (data) {
-                    console.log(data);
-                    if (data!=="") {
-                        //update view
-                        console.log('Task has been updated');
-                        $("#myModal").modal('hide');
-                    }
-                    else {
-                        console.log('smth wrong' + data);
-                    }
-                },
-                'text'
-            );
-
+        $("#submitTaskEdit").on("click", updateDescription);
+        $(".done-trigger").on("change", function () {
+            changeTaskState(this);
         });
 
         $(".container").on("click", ".editTask", function () {
@@ -105,5 +92,61 @@
             $("#modal-title").text("Edit task description #" + $(this).data("id"));
         });
     });
+
+
+    function changeTaskState(e) {
+//        console.log(elID);
+//        console.log(e.id);
+        var elID = e.id.toString().split("_")
+
+//        console.log($(e).is(':checked'));
+        var state = $(e).is(':checked');
+        $.post(
+            "/admin/update",
+            {
+                id: elID[1],
+                is_done: state,
+            },
+            function (data) {
+                console.log(data.state==true);
+
+                    if(data.state==true) {alert("true now");}
+
+
+//                $(e).prop("checked", data.state);
+
+            },
+            'json'
+        );
+
+
+    }
+
+    function updateDescription() {
+
+        var id = $("#taskId").val();
+        var descr = $("#mdl_description").val();
+
+        $.post("/admin/update",
+            {
+                //send form
+                id: id,
+                description: descr,
+            },
+            function (data) {
+                console.log(data);
+                if (data.error !== undefined) {
+                    //update view
+                    console.log('Task has been updated');
+                    $("#myModal").modal('hide');
+                }
+                else {
+                    console.log('smth wrong: ' + data.error);
+                }
+            },
+            'json'
+        );
+    }
+
 
 </script>

@@ -1,34 +1,53 @@
 <div class="container">
 
-    <form action="" method="post">
-        <div class="row">
-            <div class="col-md-2">
-                <label>Your name</label>
-            </div>
-            <div class="col-md-3"><input type="text" name="userName" required></div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-               <label>Email</label>
-            </div>
-            <div class="col-md-3"><input type="text" name="email" required></div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <label>Task text</label>
-            </div>
-            <div class="col-md-3"><textarea type="text" name="description" > </textarea></div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <label>Image</label>
-            </div>
-            <div class="col-md-3"><input type="file" name="image"></div>
-        </div>
+    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+        <fieldset>
 
-        <div class="row">
-            <button type="submit">Create task</button>
-        </div>
+            <div id="legend">
+                <legend class="">Create Task</legend>
+            </div>
+            <div class="control-group">
+                <!-- Username -->
+                <label class="control-label" for="userName">Username</label>
+                <div class="controls">
+                    <input type="text" id="userName" name="userName" placeholder="" class="input-xlarge" required>
+                    <p class="help-block">Username can contain any letters or numbers</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <!-- E-mail -->
+                <label class="control-label" for="email">E-mail</label>
+                <div class="controls">
+                    <input type="text" id="email" name="email" placeholder="" class="input-xlarge">
+                    <p class="help-block">Please provide your E-mail</p>
+                </div>
+            </div>
+            <div class="control-group">
+                <!-- E-mail -->
+                <label class="control-label" for="description">Description</label>
+                <div class="controls">
+                    <textarea type="text" name="description" id="description"> </textarea>
+                    <p class="help-block">Please describe your task</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="image">Image</label>
+                <div class="controls">
+                    <input class="" type="file" name="image" id="image">
+                    <p class="help-block">You may upload images(png,jpg,gif)</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn btn-success" type="submit">Create task</button>
+                </div>
+            </div>
+
+        </fieldset>
+
     </form>
 
 </div>

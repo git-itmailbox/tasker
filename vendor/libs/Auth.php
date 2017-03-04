@@ -17,7 +17,6 @@ class Auth {
             $pass = $_POST["password"];
 //            $pass = md5($_POST["password"]);
             $user = Users::findByLogin($user);
-var_dump($user);
             if($user->password==$pass)
             {
                 $hash = md5(Auth::generateCode(10));
