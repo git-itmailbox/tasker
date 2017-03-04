@@ -32,7 +32,7 @@ class Db
         return self::$instance;
     }
 
-    public function execute($sql,  $params = [])
+    public function execute($sql, $params = [])
     {
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($params);
@@ -49,14 +49,23 @@ class Db
         return [];
     }
 
+    public function queryOneRow($sql, $params = [])
+    {
+        $stmt = $this->pdo->prepare($sql);
+
+        $res = $stmt->execute($params);
+        if ($res !== false) {
+            return $stmt->fetch();
+        }
+        return [];
+    }
+
     public function queryBindParams($sql, $params = [])
     {
         $stmt = $this->pdo->prepare($sql);
         foreach ($params as $key => $value) {
             $stmt->bindValue($key, $value);
         }
-        var_dump($stmt);
-
         return $stmt->execute();
     }
 

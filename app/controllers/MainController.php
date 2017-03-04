@@ -33,12 +33,10 @@ class MainController extends AppController
             $model->userName=$_POST['userName'];
             $model->email=$_POST['email'];
             $model->image=$_POST['image'];
-//            var_dump($model);
 
-//            if($model->save())
-            $model->save();
-//                header('/');
-            exit;
+            if($model->save())
+                header('Location: /');
+//            $model->save();
         }
         $this->set(['model' => $model]);
 

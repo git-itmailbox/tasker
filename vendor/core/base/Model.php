@@ -36,7 +36,7 @@ abstract class Model
     {
         $field = $field ?: $this->pk;
         $sql = "SELECT * FROM {$this->table} WHERE $field=? LIMIT 1;";
-        return $this->pdo->query( $sql, [$id]);
+        return $this->pdo->queryOneRow( $sql, [$id]);
 
     }
 }

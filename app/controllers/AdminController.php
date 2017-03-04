@@ -19,14 +19,15 @@ class AdminController extends AppController
     {
 
         $this->user = Auth::run();
-
         if (!$this->user) {
             header("Location:  /admin/login");
-            return;
         }
 
-    }
+        $model = new Tasks();
+        $tasks = $model->findAll();
+        $this->set(['tasks'=>$tasks]);
 
+    }
 
     public function loginAction()
     {
@@ -34,9 +35,24 @@ class AdminController extends AppController
             $this->user = Auth::run();
         if($this->user !== false)
             header("Location:  /admin/");
-
         return;
-//        var_dump($user);
     }
 
+
+    public function updateAction()
+    {
+        $this->layout = false;
+        if($_SERVER['REQUEST_METHOD']=="POST")
+        {
+            $model  = new Tasks();
+            $id=(int)$_POST['id'];
+            if(is_int($id)){
+               $model->load($id);
+                $model->description=$_POST['description'];
+                $model->update();
+                echo $model->description;
+            }
+        }
+
+    }
 }

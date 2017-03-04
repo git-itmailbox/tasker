@@ -9,5 +9,6 @@
 return [
         'dsn'   => 'mysql:host=localhost;dbname=my_tasker;charset=utf8',
         'user'  => 'root',
-        'pass'  => '1',
+//        'pass'  => '1',
+        'pass'  => '123',
 ];
