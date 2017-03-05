@@ -7,9 +7,19 @@
  */
 
 namespace app\controllers;
-
+require_once LIBS . '/Auth.php';
 
 class AppController extends \vendor\core\base\Controller
 {
+    protected $user;
+
+    public function __construct($route)
+    {
+        parent::__construct($route);
+
+        $this->user = Auth::run();
+
+        self::setAuth($this->user);
+    }
 
 }

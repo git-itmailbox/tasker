@@ -14,17 +14,15 @@ require_once LIBS . '/Auth.php';
 class AdminController extends AppController
 {
 
-    private $user;
+//    private $user;
 
     public function indexAction()
     {
         $orderBy = 'id';
         $asc ='asc';
-        $this->user = Auth::run();
         if (!$this->user) {
             header("Location:  /admin/login");
         }
-
         $model = new Tasks();
         if (isset($this->route['order'])
             && in_array($this->route['order'], ['email', 'username', 'is-done'])
@@ -36,7 +34,7 @@ class AdminController extends AppController
         }
 
         $tasks = $model->findAll($orderBy,$asc);
-        $this->set(['tasks' => $tasks]);
+        $this->set(['tasks' => $tasks, 'user'=>$this->user]);
 
     }
 
@@ -49,6 +47,14 @@ class AdminController extends AppController
         }
 
         if ($this->user !== false)
+            header("Location:  /admin/");
+    }
+
+  public function logoutAction()
+    {
+
+        $this->user = Auth::clearAuthCookie();
+
             header("Location:  /admin/");
     }
 

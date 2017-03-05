@@ -41,7 +41,7 @@ class View
 
     }
 
-    public function render($vars)
+    public function render($vars, $user=false)
     {
         if(is_array($vars)) extract($vars);
         $file_view = APP . "/views/{$this->route['controller']}/{$this->view}.php";

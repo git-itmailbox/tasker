@@ -8,7 +8,7 @@
             </div>
             <div class="control-group">
                 <!-- Username -->
-                <label class="control-label" for="userName">Username</label>
+                <label class="control-label" for="userName">User name</label>
                 <div class="controls">
                     <input type="text" id="userName" name="userName" placeholder="" class="input-xlarge" required
                            value="<?php echo (isset($model->userName)) ? $model->userName : ""; ?>"

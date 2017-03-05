@@ -55,7 +55,13 @@
 
         <ul class="nav navbar-nav navbar-right">
 
+            <?php if(!$user): ?>
             <li><a href="/admin/login">Login</a></li>
+            <?php endif; ?>
+
+            <?php if($user): ?>
+                <li><a href="/admin/logout">Logout</a></li>
+            <?php endif; ?>
 
         </ul>
 
