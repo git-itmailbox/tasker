@@ -29,4 +29,8 @@
 
     </form>
 
+    <div class="has-error">
+        <?php if(isset($error)) echo $error;
+//                var_dump($user);
+        ?></div>
 </div>

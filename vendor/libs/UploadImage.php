@@ -73,6 +73,8 @@ class UploadImage
      */
     public static function resizeImage($srcImg, $dstPath){
 
+        $absDstPath =WWW . $dstPath;
+//        var_dump($absDstPath); exit;
         list($width, $height, $image_type) = getimagesize($srcImg);
 
         $newSize = self::ratioCalculate($width,$height);
@@ -93,9 +95,9 @@ class UploadImage
 
         switch ($image_type)
         {
-            case 1: imagegif($dstImg,$dstPath); break;
-            case 2: imagejpeg($dstImg, $dstPath, 100);  break; // best quality
-            case 3: imagepng($dstImg, $dstPath, 0); break; // no compression
+            case 1: imagegif($dstImg,$absDstPath); break;
+            case 2: imagejpeg($dstImg, $absDstPath, 100);  break; // best quality
+            case 3: imagepng($dstImg, $absDstPath, 0); break; // no compression
             default: echo ''; break;
         }
         return $dstPath;

@@ -50,12 +50,13 @@ class Users extends Model
 
     public static function findByLogin($login) {
         $pdo = Db::instance();
-        $req = $pdo->query("SELECT * FROM users where login = ? limit 1", [$login]);
+        $req = $pdo->queryOneRow("SELECT * FROM users where login = ? limit 1", [$login]);
+        if(!$req) return false;
         return new Users([
-            'id'     =>$req[0]->id,
-            'login'  =>$req[0]->login,
-            'hash'   =>$req[0]->hash,
-            'password' =>$req[0]->password,
+            'id'     =>$req->id,
+            'login'  =>$req->login,
+            'hash'   =>$req->hash,
+            'password' =>$req->password,
         ]);
     }
 

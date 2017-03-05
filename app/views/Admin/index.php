@@ -4,16 +4,37 @@
 
 
     <div class="row panel panel-default">
-        <div class="col-md-2 col-sm-2 panel-heading">user name</div>
-        <div class="col-md-2 col-sm-2 panel-heading">email</div>
+        <div class="col-md-2 col-sm-2 panel-heading">user name
+            <a href="/admin/index/username/">
+                <span class="glyphicon glyphicon-sort-by-alphabet"></span>
+            </a>
+            <a href="/admin/index/username/desc">
+                <span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
+            </a>
+        </div>
+        <div class="col-md-2 col-sm-2 panel-heading">email
+            <a href="/admin/index/email/">
+                <span class="glyphicon glyphicon-sort-by-alphabet"></span>
+            </a>
+            <a href="/admin/index/email/desc">
+                <span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
+            </a>
+        </div>
         <div class="col-md-3 col-sm-3 panel-heading">description</div>
         <div class="col-md-3 col-sm-3 panel-heading">image</div>
-        <div class="col-md-2 col-sm-2 panel-heading">is done</div>
+        <div class="col-md-2 col-sm-2 panel-heading">is done
+            <a href="/admin/index/is-done/">
+                <span class="glyphicon glyphicon-sort-by-attributes"></span>
+            </a>
+            <a href="/admin/index/is-done/desc">
+                <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+            </a>
+        </div>
     </div>
     <?php if ($tasks): ?>
         <?php foreach ($tasks as $task): ?>
 
-            <div id="task<?= $task->id ?>" class="row  <?= ($task->is_done > 0) ? "bg-success" : "bg-info"; ?>">
+            <div id="task_<?= $task->id ?>" class="row  <?= ($task->is_done > 0) ? "bg-success" : "bg-info"; ?>">
                 <div class="col-md-2 col-sm-2">
                     <?= $task->userName ?>
                 </div>
@@ -29,10 +50,10 @@
                 </div>
                 <div class="col-md-3 col-sm-3">
                     <?php if (!$task->image): ?>
-                        <img src="../img/noimage.jpeg" class="img-responsive" alt="task image"  width="100" height="100">
+                        <img src="/img/noimage.jpeg" class="img-responsive" alt="task image" width="100" height="100">
                     <?php endif; ?>
                     <?php if ($task->image): ?>
-                        <img src=".<?= $task->image ?>" class="img-responsive" alt="task image" >
+                        <img src="<?= $task->image ?>" class="img-responsive" alt="task image">
                     <?php endif; ?>
 
                 </div>
@@ -95,11 +116,7 @@
 
 
     function changeTaskState(e) {
-//        console.log(elID);
-//        console.log(e.id);
         var elID = e.id.toString().split("_")
-
-//        console.log($(e).is(':checked'));
         var state = $(e).is(':checked');
         $.post(
             "/admin/update",
@@ -108,18 +125,15 @@
                 is_done: state,
             },
             function (data) {
-                console.log(data.state==true);
-
-                    if(data.state==true) {alert("true now");}
-
-
-//                $(e).prop("checked", data.state);
-
+                if (data.is_done == true) {
+                    $("#task_" + data.id).addClass("bg-success").removeClass("bg-info");
+                }
+                if (data.is_done == false) {
+                    $("#task_" + data.id).removeClass("bg-success").addClass("bg-info");
+                }
             },
-            'json'
+            'JSON'
         );
-
-
     }
 
     function updateDescription() {
@@ -134,17 +148,19 @@
                 description: descr,
             },
             function (data) {
-                console.log(data);
-                if (data.error !== undefined) {
-                    //update view
-                    console.log('Task has been updated');
-                    $("#myModal").modal('hide');
+
+                console.log(data.error);
+                if (data.error == undefined) {
+                    console.log('smth wrong: ' + data.error);
+
                 }
                 else {
-                    console.log('smth wrong: ' + data.error);
+                    console.log('Task has been updated');
+                    $("#myModal").modal('hide');
+                    $("#task_" + data.id).find(".description").text(data.description);
                 }
             },
-            'json'
+            'JSON'
         );
     }
 

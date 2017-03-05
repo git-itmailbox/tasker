@@ -14,36 +14,36 @@ class Tasks extends Model
 {
 
     public $id,
-            $userName,
-            $email,
-            $description,
-            $is_done,
-            $image;
+        $userName,
+        $email,
+        $description,
+        $is_done,
+        $image;
 
-    function __construct($attributes=[])
+    function __construct($attributes = [])
     {
         parent::__construct();
-        $this->table        = 'tasks';
-        $this->id           = (isset($attributes->id))          ? $attributes->id           : "";
-        $this->userName     = (isset($attributes->userName))    ? $attributes->userName     : "";
-        $this->email        = (isset($attributes->email))       ? $attributes->email        : "";
-        $this->description  = (isset($attributes->description)) ? $attributes->description  : "";
-        $this->is_done      = (isset($attributes->is_done))     ? $attributes->is_done      : "";
-        $this->image        = (isset($attributes->image))       ? $attributes->image        : "";
+        $this->table = 'tasks';
+        $this->id = (isset($attributes->id)) ? $attributes->id : "";
+        $this->userName = (isset($attributes->userName)) ? $attributes->userName : "";
+        $this->email = (isset($attributes->email)) ? $attributes->email : "";
+        $this->description = (isset($attributes->description)) ? $attributes->description : "";
+        $this->is_done = (isset($attributes->is_done)) ? $attributes->is_done : "";
+        $this->image = (isset($attributes->image)) ? $attributes->image : "";
 
     }
 
 
     public function save()
     {
-        $sql = "INSERT INTO tasks(userName, email, description, image) VALUES (:username, :email, :description, :image)";
+        $sql = "INSERT INTO tasks(userName, email, description, image, is_done) VALUES (:username, :email, :description, :image, :is_done)";
 
         $bindParams = [
-            ':username'     =>  $this->userName,
-            ':email'        =>  $this->email,
-            ':description'  =>  $this->description,
-            ':image'        =>  $this->image,
-//            ':is_done'      =>  $this->is_done,
+            ':username' => $this->userName,
+            ':email' => $this->email,
+            ':description' => $this->description,
+            ':image' => $this->image,
+            ':is_done'      =>  '0',
         ];
         $stmt = $this->pdo->queryBindParams($sql, $bindParams);
 
@@ -54,12 +54,12 @@ class Tasks extends Model
     {
         $task = parent::findOne($id);
 
-           $this->id         = $task->id;
-           $this->userName   = $task->userName;
-           $this->email      = $task->email;
-           $this->description= $task->description;
-           $this->is_done    = $task->is_done;
-           $this->image      = $task->image;
+        $this->id = $task->id;
+        $this->userName = $task->userName;
+        $this->email = $task->email;
+        $this->description = $task->description;
+        $this->is_done = $task->is_done;
+        $this->image = $task->image;
 
     }
 
@@ -67,21 +67,28 @@ class Tasks extends Model
     {
         $sql = "UPDATE tasks SET  userName= :userName, email= :email, description= :description, is_done = :is_done WHERE id = :id";
         $bindParams = [
-
-            ':userName'     =>  $this->userName,
-            ':email'        =>  $this->email,
-            ':description'  =>  $this->description,
-            ':is_done'      =>  $this->is_done,
-            ':id'           =>  $this->id,
-
+            ':id' => $this->id,
+            ':userName' => $this->userName,
+            ':email' => $this->email,
+            ':description' => $this->description,
+            ':is_done' => $this->is_done,
         ];
         $stmt = $this->pdo->queryBindParams($sql, $bindParams);
 
         return $stmt;
-
     }
 
+    public function validate()
+    {
+        $error=[];
+        if(strlen($this->userName)<3)
+            $error['userName'] = 'user name must be at least 3 symbols';
+        if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            $error['email'] = 'Email is not valid';
+        }
 
+        return $error;
+    }
 
 
 }

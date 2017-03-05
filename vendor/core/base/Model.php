@@ -27,10 +27,12 @@ abstract class Model
         return $this->pdo->execute($sql);
     }
 
-    public function findAll($order = "")
+    public function findAll($order = "" , $asc='asc')
     {
+        if($asc!=='asc' && $asc!=='desc' )
+            $asc='asc';
         $order= $order ?: $this->order;
-        $sql = "SELECT * FROM {$this->table} ORDER BY {$order}";
+        $sql = "SELECT * FROM {$this->table} ORDER BY {$order} $asc";
         return $this->pdo->query($sql);
     }
 

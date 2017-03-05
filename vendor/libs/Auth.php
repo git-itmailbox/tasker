@@ -9,23 +9,21 @@ use \app\models\Users;
  */
 
 class Auth {
-    public  $error="";
+//    public  $error="";
     public static function run() {
-
+//var_dump($_POST);
         if(isset($_POST["login"]) && isset($_POST["password"])) {
             $user = $_POST["login"];
             $pass = $_POST["password"];
 //            $pass = md5($_POST["password"]);
             $user = Users::findByLogin($user);
-            if($user->password==$pass)
+            if($user!==false && $user->password==$pass)
             {
                 $hash = md5(Auth::generateCode(10));
                 Auth::setAuthCookie($user->login, $hash);
                 $user->updateHash($hash);
                 return $user;
             }
-            else
-                echo "Wrong login/password";
 
         }
         else if(isset($_COOKIE["login"]) && isset($_COOKIE["hash"])) {

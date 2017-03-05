@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use \app\models\Tasks;
+
 require_once LIBS . '/UploadImage.php';
 
 /**
@@ -26,19 +27,20 @@ class MainController extends AppController
     public function createAction()
     {
         $model = new Tasks();
-
+        $errors=[];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $model->description=$_POST['description'];
-            $model->userName=$_POST['userName'];
-            $model->email=$_POST['email'];
-            $model->image = UploadImage::upload( $_FILES['image'] );
-
-            if($model->save())
-                header('Location: /');
-//            $model->save();
+            $model->description = $_POST['description'];
+            $model->userName = $_POST['userName'];
+            $model->email = $_POST['email'];
+            $model->image = UploadImage::upload($_FILES['image']);
+            $errors = $model->validate();
+            if (empty($errors))
+            {
+                if ($model->save())
+                    header('Location: /');
+            }
         }
-        $this->set(['model' => $model]);
-
+        $this->set(['model' => $model, 'errors'=>$errors]);
     }
 
     public function testAction()

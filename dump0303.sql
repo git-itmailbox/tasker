@@ -2,7 +2,7 @@
 --
 -- Host: 127.0.0.1    Database: my_tasker
 -- ------------------------------------------------------
--- Server version	5.7.17-0ubuntu0.16.10.1
+-- Server version	5.7.17-0ubuntu0.16.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,8 +28,9 @@ CREATE TABLE `tasks` (
   `email` varchar(100) NOT NULL,
   `description` text NOT NULL,
   `image` varchar(100) DEFAULT NULL,
+  `is_done` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +39,7 @@ CREATE TABLE `tasks` (
 
 LOCK TABLES `tasks` WRITE;
 /*!40000 ALTER TABLE `tasks` DISABLE KEYS */;
-INSERT INTO `tasks` VALUES (9,'sdfsdf','sdfsdf',' sdfsdfs','');
+INSERT INTO `tasks` VALUES (9,'sdfsdf','sdfsdf','sdfsdfs4\nabc','',1),(10,'yura','yure@mail.com','some awesome test taskasd 234rff','',1),(37,'yy','yy@dd.dd','aasdfui hasdifu sdfsdf','/img/9f7760ab92b0f9f76ac8_1.jpeg',1),(38,'sdfsd','sdfas@dfgdfg.ghdmin','test','/img/33194bf68ffb8542632e_Снимок экрана от 2017-01-11 10-42-51.png',0),(39,'abc','zero@sdd.ss',' poouhsbnjnd sj djs jddj','/img/b21b9b055c93e56ad590_sports3.jpeg',NULL),(43,'asdd','fdf@dfd.jj','edited test description','/img/933bd3747ea4c5fa799b_sports.jpeg',1);
 /*!40000 ALTER TABLE `tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,7 +66,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','123','368c866b76abaa60d1ee73921cca6dd9');
+INSERT INTO `users` VALUES (1,'admin','123','bebb950ccbba9d954947adcb78b601f0');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -78,4 +79,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-03 17:16:15
+-- Dump completed on 2017-03-05 20:30:49

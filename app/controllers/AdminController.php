@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use app\models\Tasks;
+
 require_once LIBS . '/Auth.php';
 
 /**
@@ -17,56 +18,62 @@ class AdminController extends AppController
 
     public function indexAction()
     {
-        $orderBy ='id';
+        $orderBy = 'id';
+        $asc ='asc';
         $this->user = Auth::run();
         if (!$this->user) {
             header("Location:  /admin/login");
         }
 
-//        var_dump($this->route);
         $model = new Tasks();
-        if( isset($this->route['order'])
-            &&  in_array($this->route['order'], ['email','id', 'is-done'])){
-            $orderBy = str_replace('-','_',$this->route['order']);
+        if (isset($this->route['order'])
+            && in_array($this->route['order'], ['email', 'username', 'is-done'])
+        ) {
+            $orderBy = str_replace('-', '_', $this->route['order']);
+        }
+        if (isset($this->route['asc'])) {
+            $asc = $this->route['asc'];
         }
 
-        $tasks = $model->findAll($orderBy);
-        $this->set(['tasks'=>$tasks]);
+        $tasks = $model->findAll($orderBy,$asc);
+        $this->set(['tasks' => $tasks]);
 
     }
 
     public function loginAction()
     {
-        if(!$this->user)
-            $this->user = Auth::run();
-        if($this->user !== false)
+
+        $this->user = Auth::run();
+        if ($_SERVER['REQUEST_METHOD'] == "POST" && !($this->user)) {
+            $this->set(['error' => "Wrong login/password"]);
+        }
+
+        if ($this->user !== false)
             header("Location:  /admin/");
-        return;
     }
 
 
     public function updateAction()
     {
         $this->layout = false;
-        if($_SERVER['REQUEST_METHOD']=="POST")
-        {
-            $model  = new Tasks();
-            $id=(int)$_POST['id'];
-            if(is_int($id)){
-               $model->load($id);
-                if(isset($_POST['description'])) $model->description=$_POST['description'];
-                if(isset($_POST['is_done'])) $model->is_done=($_POST['is_done']==='true')? 1 : 0;
-                if($model->update()) {
-                    echo $model->description;
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $model = new Tasks();
+            $id = (int)$_POST['id'];
+            if (is_int($id)) {
+                $model->load($id);
+                if (isset($_POST['description'])) $model->description = $_POST['description'];
+                if (isset($_POST['is_done'])) $model->is_done = ($_POST['is_done'] === 'true') ? 1 : 0;
+                if ($model->update()) {
+//                    echo $model->description;
                     echo json_encode([
                         'id' => $model->id,
                         'description' => $model->description,
                         'is_done' => (bool)$model->is_done,
+                        'error' => "",
                     ]);
-                }
-                else{
+                } else {
                     echo json_decode([
-                       'error' => 'Cant chaenge state',
+                        'error' => 'Cant chaenge state',
                     ]);
                 }
 //
